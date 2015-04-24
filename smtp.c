@@ -390,6 +390,8 @@ int main (int argc, char *argv[])
     char *second;
     char *check_ip;
 
+    printf ("here: '%s'\n", codeAndResponse);
+
     if (strcmp(code, ready_code) == 0)
     {
         entry_code = true;
@@ -399,10 +401,10 @@ int main (int argc, char *argv[])
     while(entry_code == true)
     {      
         
-        while(strcmp(buf, codeAndResponse) != 0)
+        while(strstr(buf, codeAndResponse) == 0)
         {   
             fgets(buf, MAXDATASIZE, stdin);
-            if (strcmp(buf, codeAndResponse) != 0)
+            if (strstr(buf, codeAndResponse) == 0)
                 printf("Code expected: '%s'\n", codeAndResponse);
             //printVariations(code);
             
@@ -422,7 +424,7 @@ int main (int argc, char *argv[])
         exit(1);
     }
 
-    fputs(second_buf, stdout);
+      fputs(second_buf, stdout);
      char holder[INET6_ADDRSTRLEN];
    
      strcpy(holder, second_buf);
@@ -481,7 +483,7 @@ int main (int argc, char *argv[])
                 
 
 
-                if ((strstr(buf, "MAIL") != 0) && (strcmp(s, result) == 0)) // if "MAIL" is substr of buf and s equals to result
+                if ((strstr(buf, "MAIL") != 0) && (strcmp(myservinfo->ai_canonname, result) == 0)) // if "MAIL" is substr of buf and s equals to result
                 {    
                      result[0] = '\0'; // clean string
                     
@@ -744,9 +746,7 @@ int main (int argc, char *argv[])
   					
   					if (strcmp("HELO", first) == 0)
   					{
-  						if (strcmp(check_ip, second) == 0)
-  						{	
-
+  						  
   							// memset(codeAndResponse, 0, MAXDATASIZE);
   							codeAndResponse = concat("250 ", host);
   							
@@ -755,9 +755,7 @@ int main (int argc, char *argv[])
  												perror("send");
  									}
                   buf[0] = '\0';
-	  							
-  							
-  						}
+	  								
   					}
 
   					if (strcmp("MAIL", first) == 0)

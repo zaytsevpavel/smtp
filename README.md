@@ -17,6 +17,14 @@ in RFC 821.
 are present on the receiver. 
 - When receiver sends the code 354, sender should not input the mail, but
 just type 'Send' to send the mail from the provided file.
+- The domain name of the emails you plan to send mails to is shown in the response after HELO command.
+For example:
+>>HELO pavels-macbook-air.local
+250 Pavels-MacBook-Air.local
+>>MAIL FROM:<Smith@pavels-macbook-air.local>
+250 OK
+>>RCPT TO:<Bill@Pavels-MacBook-Air.local>
+250 OK
 
 Example of execution:
 
