@@ -811,7 +811,7 @@ int main (int argc, char *argv[])
 
   					if (strstr(buf, "QUIT") != 0)
   					{
-  						codeAndResponse = concat("221 ", p->ai_canonname);
+  						codeAndResponse = concat("221 ", host);
   						response = " Service closing transmission channel";
   						codeAndResponse = concat(codeAndResponse, response);
 
