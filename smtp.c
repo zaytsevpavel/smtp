@@ -633,7 +633,7 @@ int main (int argc, char *argv[])
             continue;
         }
 
-        printf("hostname: '%s'\n", p->ai_canonname);
+       // printf("hostname: '%s'\n", p->ai_canonname);
         break;
   		}
 
@@ -680,9 +680,9 @@ int main (int argc, char *argv[])
   		const struct sockaddr *ip;
  			ip = servinfo->ai_addr;
 
- 			getnameinfo(ip, sizeof(addr), host, sizeof(host), service, sizeof(service), 0);
+ 			//getnameinfo(ip, sizeof(addr), host, sizeof(host), service, sizeof(service), 0);
  			char *response = " Simple Mail Transfer Service Ready";
- 			char *codeAndResponse = concat("220 ", host);
+ 			char *codeAndResponse = concat("220 ", p->ai_canonname);
  			char *ready = concat(codeAndResponse, response);
  			int a, b;
 
