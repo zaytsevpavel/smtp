@@ -390,8 +390,6 @@ int main (int argc, char *argv[])
     char *second;
     char *check_ip;
 
-    printf ("here: '%s'\n", codeAndResponse);
-
     if (strcmp(code, ready_code) == 0)
     {
         entry_code = true;
@@ -653,7 +651,6 @@ int main (int argc, char *argv[])
             continue;
         }
 
-        printf("hostname: '%s'\n", p->ai_canonname);
         break;
   		}
 
@@ -814,7 +811,7 @@ int main (int argc, char *argv[])
 
   					if (strstr(buf, "QUIT") != 0)
   					{
-  						codeAndResponse = concat("221 ", host);
+  						codeAndResponse = concat("221 ", p->ai_canonname);
   						response = " Service closing transmission channel";
   						codeAndResponse = concat(codeAndResponse, response);
 
