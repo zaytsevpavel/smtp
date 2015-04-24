@@ -194,7 +194,9 @@ int main (int argc, char *argv[])
 	char buf[MAXDATASIZE];
 	int count;
 	struct addrinfo hints, *servinfo, *p;
-	int rv, ret;
+  struct addrinfo myhints, *myservinfo, *myp;
+
+	int rv, ret, sv;
 	char host[1024];
 	char service[20];
 	char s[INET6_ADDRSTRLEN];
@@ -303,15 +305,28 @@ int main (int argc, char *argv[])
 		if (sender_mode == true)
 		{
 
+      gethostname(host, 1023);
 			// since now on the sender code applies
 			memset(&hints, 0, sizeof hints);
     	hints.ai_family = AF_UNSPEC;
     	hints.ai_socktype = SOCK_STREAM;
+      hints.ai_flags = AI_CANONNAME;
+
+      myhints.ai_family = AF_UNSPEC;
+      myhints.ai_socktype = SOCK_STREAM;
+      myhints.ai_flags = AI_CANONNAME;
+
     	if ((rv = getaddrinfo(node, PORT, &hints, &servinfo)) != 0) 
     	{
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
         return 1;
     	}
+
+      if ((sv = getaddrinfo(host, PORT, &myhints, &myservinfo)) != 0)
+      {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        return 1;
+      }
 
     	for(p = servinfo; p != NULL; p = p->ai_next) 
     	{
@@ -330,6 +345,9 @@ int main (int argc, char *argv[])
 
         break;
     	}
+
+      // printf("my canon name: '%s'\n", myservinfo->ai_canonname);
+
 
     	if (p == NULL) 
     	{
@@ -354,10 +372,10 @@ int main (int argc, char *argv[])
     const struct sockaddr *ip;
     ip = servinfo->ai_addr;
 
-    getnameinfo(ip, sizeof(addr), host, sizeof(host), service, sizeof(service), 0);
+    //getnameinfo(ip, sizeof(addr), host, sizeof(host), service, sizeof(service), 0);
 
     char *HELO = "HELO ";
-    char *codeAndResponse = concat(HELO, s);
+    char *codeAndResponse = concat(HELO, myservinfo->ai_canonname);
     codeAndResponse = concat(codeAndResponse, "\n");
     char code[4];
     bool entry_code = false;
@@ -633,7 +651,7 @@ int main (int argc, char *argv[])
             continue;
         }
 
-       // printf("hostname: '%s'\n", p->ai_canonname);
+        printf("hostname: '%s'\n", p->ai_canonname);
         break;
   		}
 
