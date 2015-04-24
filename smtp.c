@@ -594,14 +594,16 @@ int main (int argc, char *argv[])
 		}
 
 		if (receiver_mode == true)
-		{
+		{ 
+
+      gethostname(host, 1023);
 			// since now on the receiver code applies
 			memset(&hints, 0, sizeof (hints));
   		hints.ai_family = AF_UNSPEC;
   		hints.ai_socktype = SOCK_STREAM;
-  		hints.ai_flags = AI_PASSIVE; // use my IP
+  		hints.ai_flags = AI_CANONNAME; // use my IP
 
-  		if ((rv = getaddrinfo(NULL, PORT, &hints, &servinfo)) != 0) 
+  		if ((rv = getaddrinfo(host, PORT, &hints, &servinfo)) != 0) 
   		{
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
         return 1;
@@ -631,6 +633,7 @@ int main (int argc, char *argv[])
             continue;
         }
 
+        printf("hostname: '%s'\n", p->ai_canonname);
         break;
   		}
 
@@ -669,6 +672,8 @@ int main (int argc, char *argv[])
   		inet_ntop(their_addr.ss_family,
       	get_in_addr((struct sockaddr *)&their_addr),
       	s, sizeof s);
+
+
 
   		memset(buf, 0, MAXDATASIZE);
 

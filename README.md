@@ -8,6 +8,8 @@ as a sender use: ./smtp -s [hostname] [-f filename], where filename is 'example.
 Notice: you need to know your receiver's ip to be able to connect.
 
 Assumptions:
+- Choice of language: C
+- Server is the receiver
 - For the best performance follow scenario 1 exactly like it is mentioned 
 in RFC 821. 
 - The hostnames are substituted with the addresses.
